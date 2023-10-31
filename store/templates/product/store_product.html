@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekart|Add Product</title>
+</head>
+<body>
+          <h1 align="center">Add Product</h1>
+          <hr>
+          <br><br><br>
+          <form method="POST">
+                    {% csrf_token %}
+                    <table align="center" >
+                             <tr>
+                                    <td><strong>Product Name:</strong></td>
+                                    <td><input type="text" name="pname" id=""></td>
+                             </tr>
+                             <tr>
+                                    <td><strong>Price(Per item):</strong></td>
+                                    <td><input type="number" name="price" id=""></td>
+                             </tr>
+                             <tr>
+                                  <td><strong>Quantity:</strong></td>
+                                  <td><input type="number" name="qty" id=""></td>
+                             </tr>
+                             <tr>
+                                  <td><strong>Category:</strong></td>
+                                  <td>
+                                        <select name="cat" id="">
+                                                  <option value="1">Mobile</option>
+                                                  <option value="2">Shoes</option>
+                                                  <option value="3">Cloths</option>
+                                        </select>
+
+                                  </td>
+                             </tr>
+
+                             <tr>
+                                  <td><strong>Is_available?:</strong></td>
+                                  <td>
+                                       <input type="radio" value="1" name="avail" id=""> YES
+                                       <input type="radio" value="0" name="avail" id=""> NO
+                                  </td>
+                             </tr>
+
+                             <tr>
+                                 <td colspan="2" align="center"><input type="submit" value="Add Product"></td>
+                             </tr>
+                    </table>
+          </form>
+
+          <a href="/productapp/productdash"><button>Back</button></a>
+
+</body>
+</html>

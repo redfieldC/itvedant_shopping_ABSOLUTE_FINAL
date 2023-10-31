@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block 'main' %}
+<!--- Main section start-->
+<div class="row mt-5">
+
+    <div class="col-md-4">
+        <img src="{{product.pimage.url}}" alt="" width="100%" height="400px">
+    </div>
+
+    <div class="col-md-5">
+          <h4>{{product.name}}</h4>
+          <hr>
+          <h6>Amount</h6>
+          <p>Rs.{{product.price}}</p>
+          <hr>
+          <h6>About this product</h6>
+           <p>{{product.pdetails}}</p>
+    </div>
+
+    <div class="col-md-3">
+           <a href="/cart/{{product.id}}"><button class="btn btn-danger">Add to Cart</button></a> 
+           <a href=""><button class="btn btn-danger">Buy Now</button></a> <br><br>
+
+           {% if msg1 %}
+              <div class="alert alert-danger"> {{msg1}}</div>
+           {% endif %}
+
+           {% if msg2 %}
+               <div class="alert alert-success"> {{msg2}}
+                <a href="/cart" class="anchor">View cart</a>
+               </div>
+           {% endif %}
+    </div>
+
+</div>
+
+<!--- Main section End-->
+
+{% endblock 'main' %}
