@@ -19,7 +19,8 @@ urlpatterns = [
     path('cart/<prod_id>',views.addtocart),
     path('removecart/<cid>',views.remove_cart),
     path('changeqty/<cid>',views.changeqty),
-    path('removeorder/<oid>',views.removeorder)
+    path('removeorder/<oid>',views.removeorder),
+    path('makepayment',views.make_payment)
 
 ]
 

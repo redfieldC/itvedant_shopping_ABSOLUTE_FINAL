@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from productapp.models import Product
 from storeapp.models import Cart,Order
 from django.db.models import Q
+import razorpay
 # Create your views here.
 '''
 views provide response to client by using:
@@ -234,3 +235,18 @@ def removeorder(request,oid):
     context={}
     context['orders'] = orem
     return render(request,'storeapp/placeorder.html',context)
+
+
+
+def make_payment(request):
+    context={}
+    client = razorpay.Client(auth=("rzp_test_LGf39o11W2wyEu", "17UbH2wRWXARkNZf5YZAyEdY"))
+    o = Order.objects.filter(uid=request.user.id)
+    total = 0
+    for x in o:
+        total = total + (x.pid.price*x.qty)
+    famt = total * 100
+    data = { "amount": famt, "currency": "INR", "receipt": o[0].order_id }
+    payment = client.order.create(data=data)
+    context['payment'] = payment
+    return render(request,"storeapp/pay.html",context)
