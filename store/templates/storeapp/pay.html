@@ -14,9 +14,14 @@
         image: "https://example.com/your_logo",
         order_id: "{{payment.id}}", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
         handler: function (response) {
-          alert(response.razorpay_payment_id);
-          alert(response.razorpay_order_id);
-          alert(response.razorpay_signature);
+          // alert(response.razorpay_payment_id);
+          // alert(response.razorpay_order_id);
+          // alert(response.razorpay_signature);
+          var url;
+          rpid = response.razorpay_payment_id
+          roid = response.razorpay_order_id
+          url = "http://127.0.0.1:8000/sendmail?oid={{payment.receipt}}&rpayid="+rpid+"&roid="+roid;
+          window.location.href = url;
         },
         prefill: {
           name: "{{user.first_name}}",

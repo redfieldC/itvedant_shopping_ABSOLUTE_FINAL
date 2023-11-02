@@ -20,7 +20,8 @@ urlpatterns = [
     path('removecart/<cid>',views.remove_cart),
     path('changeqty/<cid>',views.changeqty),
     path('removeorder/<oid>',views.removeorder),
-    path('makepayment',views.make_payment)
+    path('makepayment',views.make_payment),
+    path('sendmail',views.sendmail)
 
 ]
 

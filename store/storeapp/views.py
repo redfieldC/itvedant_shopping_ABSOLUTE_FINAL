@@ -2,6 +2,7 @@ from django.shortcuts import render,HttpResponse,redirect
 from productapp.models import Product
 from storeapp.models import Cart,Order
 from django.db.models import Q
+from django.core.mail import send_mail
 import razorpay
 # Create your views here.
 '''
@@ -210,10 +211,14 @@ def placeorder_page(request):
        oid = generate_orderid()
        c  = Cart.objects.filter(uid=request.user.id)
        for x in c:
+           print(c)
            o = Order.objects.create(order_id=oid,uid=x.uid,pid=x.pid,qty=x.qty)
            o.save()
            x.delete()
-       o = Order.objects.filter(uid = request.user.id)
+       
+       q1 = Q(uid = request.user.id)
+       q2 = Q(is_completed = False)
+       o = Order.objects.filter(q1 & q2)
        nos = len(o)
        total=0
        for x in o:
@@ -241,7 +246,9 @@ def removeorder(request,oid):
 def make_payment(request):
     context={}
     client = razorpay.Client(auth=("rzp_test_LGf39o11W2wyEu", "17UbH2wRWXARkNZf5YZAyEdY"))
-    o = Order.objects.filter(uid=request.user.id)
+    q1= Q(uid = request.user.id)
+    q2 = Q(is_completed=False)
+    o = Order.objects.filter(q1 & q2)
     total = 0
     for x in o:
         total = total + (x.pid.price*x.qty)
@@ -250,3 +257,29 @@ def make_payment(request):
     payment = client.order.create(data=data)
     context['payment'] = payment
     return render(request,"storeapp/pay.html",context)
+
+
+def sendmail(request):
+    order_id = request.GET['oid']
+    pay_id = request.GET['rpayid']
+    roid = request.GET['roid']
+    print("order_id: ",order_id)
+    print("pay_id: ",pay_id)
+    print("roid: ",roid)
+    o = Order.objects.filter(order_id=order_id)
+    o.update(is_completed=True)
+    subject = "Ekart Order placed successfully "
+    msg  = "Order details are as follows: Order-id:" + order_id + " Payment Id: "+ pay_id
+    send_mail(
+        subject,
+        msg,
+        "amepot09@gmail.com",
+        [request.user.email], #you can use request.user.email
+        fail_silently=False,
+    )
+    return HttpResponse("Hi there, You have received an email for the order you placed for !!!")
+
+
+
+
+#cava engi azul yruo
