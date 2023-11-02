@@ -1,0 +1,47 @@
+1) in your views write : 
+
+from django.core.mail import send_mail
+
+
+2) example of sending email function
+
+def sendmail(request):
+    order_id = request.GET['oid']
+    pay_id = request.GET['rpayid']
+    roid = request.GET['roid']
+    print("order_id: ",order_id)
+    print("pay_id: ",pay_id)
+    print("roid: ",roid)
+    o = Order.objects.filter(order_id=order_id)
+    o.update(is_completed=True)
+    subject = "Ekart Order placed successfully "
+    msg  = "Order details are as follows: Order-id:" + order_id + " Payment Id: "+ pay_id
+    send_mail(
+        subject,
+        msg,
+        "amepot09@gmail.com",
+        [request.user.email], #you can use request.user.email
+        fail_silently=False,
+    )
+    return HttpResponse("Hi there, You have received an email for the order you placed for !!!")
+
+
+3) in your settings do the following code :
+
+#email settings
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "amepot09@gmail.com"
+EMAIL_HOST_PASSWORD = "cava engi azul yruo"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+#email settings ends here
+
+
+NOTE: to generte password : 
+1)go to gmail account 
+2) security
+3) two factor authentiation
+4)app password
+5) generate password
+6) use that password for EMAIL_HOST_PASSWORD
